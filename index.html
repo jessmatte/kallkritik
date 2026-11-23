@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lektion 3: Bygglabbet – Källkritik & Slutgenrep – Naturkunskap 1a1</title>
+  <style>
+    :root {
+      --bg-main: #12161c;
+      --bg-card: #1b222c;
+      --bg-card-alt: #232c38;
+      --bg-input: #101419;
+      --accent: #f59e0b;
+      --accent-hover: #fbbf24;
+      --accent-text: #111827;
+      --blue: #38bdf8;
+      --blue-bg: rgba(56, 189, 248, 0.14);
+      --green: #22c55e;
+      --green-bg: rgba(34, 197, 94, 0.15);
+      --red: #f87171;
+      --red-bg: rgba(248, 113, 113, 0.15);
+      --purple: #c084fc;
+      --purple-bg: rgba(192, 132, 252, 0.15);
+      --text-main: #f3f4f6;
+      --text-muted: #cbd5e1;
+      --border: #334155;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-size: 18px;
+      line-height: 1.6;
+      letter-spacing: 0.015em;
+    }
+
+    /* Sticky Top Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: #0d1117;
+      border-bottom: 2px solid var(--border);
+      padding: 12px 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    }
+
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--accent);
+    }
+
+    .brand-badge {
+      background: var(--accent);
+      color: var(--accent-text);
+      padding: 2px 9px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .tts-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .progress-wrap {
+      max-width: 960px;
+      margin: 10px auto 0;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background-color: var(--bg-card-alt);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #fbbf24);
+      transition: width 0.35s ease;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 960px;
+      margin: 24px auto 60px;
+      padding: 0 18px;
+    }
+
+    /* Class Overview & Walkthrough Panel (toggled via Shift+L) */
+    .teacher-panel {
+      background: linear-gradient(135deg, #1e1b4b, #172554);
+      border: 2px solid #818cf8;
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      font-size: 1rem;
+    }
+
+    .teacher-panel-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .teacher-title {
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #e0e7ff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .teacher-overview-box {
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(129, 140, 248, 0.4);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin: 12px 0 16px;
+      color: #f1f5f9;
+      line-height: 1.55;
+    }
+
+    .teacher-overview-box ul {
+      margin: 10px 0 10px 0;
+      padding-left: 22px;
+    }
+
+    .teacher-overview-box li {
+      margin-bottom: 6px;
+    }
+
+    .teacher-nav-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .teacher-stage-btn {
+      background: rgba(30, 41, 59, 0.9);
+      color: #e2e8f0;
+      border: 1px solid #475569;
+      padding: 6px 11px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .teacher-stage-btn:hover {
+      border-color: #818cf8;
+      color: #ffffff;
+    }
+
+    .teacher-stage-btn.active {
+      background: #6366f1;
+      border-color: #a5b4fc;
+      color: #ffffff;
+    }
+
+    .teacher-action-btn {
+      background: #312e81;
+      color: #e0e7ff;
+      border: 1px solid #818cf8;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+    }
+
+    .teacher-action-btn:hover {
+      background: #4338ca;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+    }
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      color: #ffffff;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      color: var(--accent);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .tag-e {
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+
+    .tag-ca {
+      background: var(--purple-bg);
+      color: var(--purple);
+      border: 1px solid rgba(192, 132, 252, 0.4);
+    }
+
+    .tag-pair {
+      background: var(--blue-bg);
+      color: var(--blue);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    /* Buttons */
+    button {
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 10px;
+      border: none;
+      padding: 12px 18px;
+      transition: transform 0.08s ease, background-color 0.15s ease, border-color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: var(--accent-text);
+      font-size: 1.08rem;
+      padding: 14px 24px;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-card-alt);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-tts {
+      background-color: var(--blue-bg);
+      color: var(--blue);
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .btn-tts:hover {
+      background-color: rgba(56, 189, 248, 0.25);
+    }
+
+    .btn-tts.speaking {
+      background-color: var(--blue);
+      color: #0f172a;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+    }
+
+    /* Inputs & Anti-Paste Notice */
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #f8fafc;
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      background-color: var(--bg-input);
+      color: #ffffff;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    input[type="text"]:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .no-paste-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    /* Choice Options */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    @media (min-width: 700px) {
+      .options-grid.two-col {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .option-btn {
+      background-color: var(--bg-card-alt);
+      color: var(--text-main);
+      border: 2px solid var(--border);
+      text-align: left;
+      justify-content: flex-start;
+      padding: 16px 18px;
+      font-weight: 600;
+      line-height: 1.45;
+      width: 100%;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      background-color: #293442;
+    }
+
+    .option-btn.selected {
+      border-color: var(--blue);
+      background-color: var(--blue-bg);
+    }
+
+    .option-btn.correct {
+      border-color: var(--green);
+      background-color: var(--green-bg);
+      color: #ecfdf5;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--red);
+      background-color: var(--red-bg);
+      color: #fef2f2;
+    }
+
+    /* Data Table & Analysis Cards */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      background-color: var(--bg-card-alt);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .data-table th, .data-table td {
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      text-align: left;
+    }
+
+    .data-table th {
+      background-color: #0f172a;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .group-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    @media (min-width: 740px) {
+      .group-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .group-box {
+      background-color: var(--bg-card-alt);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .group-box.treat {
+      border-top: 5px solid var(--green);
+    }
+
+    .group-box.ctrl {
+      border-top: 5px solid var(--accent);
+    }
+
+    /* Feedback Box */
+    .feedback-box {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      border-left: 5px solid var(--blue);
+      background-color: var(--bg-card-alt);
+      display: none;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.ok {
+      border-left-color: var(--green);
+      background-color: var(--green-bg);
+    }
+
+    .feedback-box.err {
+      border-left-color: var(--red);
+      background-color: var(--red-bg);
+    }
+
+    /* Pair Discussion Box */
+    .pair-box {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(245, 158, 11, 0.08));
+      border: 2px solid rgba(56, 189, 248, 0.45);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 18px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin: 12px 0;
+      cursor: pointer;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      accent-color: var(--green);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Oral Timer */
+    .timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #0f172a;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Toast Warning */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #991b1b;
+      color: #ffffff;
+      border: 2px solid #f87171;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      z-index: 9999;
+      display: none;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+    .nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .summary-textarea {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
+      min-height: 360px;
+      background-color: #0b0f14;
+      color: #e2e8f0;
+      border: 2px solid var(--green);
+    }
+
+    .starter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .chip-btn {
+      background: rgba(245, 158, 11, 0.14);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 6px 12px;
+      font-size: 0.88rem;
+      border-radius: 8px;
+    }
+
+    .chip-btn:hover {
+      background: rgba(245, 158, 11, 0.28);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-badge">Lektion 3 av 3</span>
+      <span>Bygglabbet: Källkritik & Slutgenrep</span>
+    </div>
+    <div class="tts-controls">
+      <button type="button" class="btn-tts" id="btnAutoTts" onclick="toggleAutoTts()">
+        🔊 Auto-uppläsning: AV
+      </button>
+      <button type="button" class="btn-secondary" style="padding: 8px 12px; font-size: 0.9rem;" onclick="stopSpeech()">
+        ⏹ Stoppa ljud
+      </button>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span id="stageLabel">Start: Par-incheckning</span>
+      <span id="timeEstimate">Ca 40 min totalt</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+  </div>
+</header>
+
+<main id="appContainer"></main>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   1. SWEDISH TEXT-TO-SPEECH (CHROMEBOOK OPTIMIZED)
+   ========================================================= */
+let svVoice = null;
+let autoTts = false;
+let currentSpeakBtn = null;
+
+function loadSwedishVoices() {
+  if (!('speechSynthesis' in window)) return;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices || voices.length === 0) return;
+
+  svVoice =
+    voices.find(v => v.lang.toLowerCase() === 'sv-se' && v.name.toLowerCase().includes('google')) ||
+    voices.find(v => v.lang.toLowerCase() === 'sv-se') ||
+    voices.find(v => v.lang.toLowerCase().startsWith('sv')) ||
+    null;
+}
+
+if ('speechSynthesis' in window) {
+  loadSwedishVoices();
+  window.speechSynthesis.onvoiceschanged = loadSwedishVoices;
+}
+
+function stopSpeech() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  if (currentSpeakBtn) {
+    currentSpeakBtn.classList.remove('speaking');
+    currentSpeakBtn = null;
+  }
+}
+
+function speakText(text, btnEl = null) {
+  if (!('speechSynthesis' in window)) {
+    showToast("Din webbläsare stöder tyvärr inte uppläsning.");
+    return;
+  }
+  stopSpeech();
+  loadSwedishVoices();
+
+  const cleanText = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!cleanText) return;
+
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  utterance.lang = 'sv-SE';
+  if (svVoice) utterance.voice = svVoice;
+  utterance.rate = 0.96;
+  utterance.pitch = 1.0;
+
+  if (btnEl) {
+    currentSpeakBtn = btnEl;
+    btnEl.classList.add('speaking');
+  }
+
+  utterance.onend = () => {
+    if (btnEl) btnEl.classList.remove('speaking');
+    if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
+  };
+  utterance.onerror = () => {
+    if (btnEl) btnEl.classList.remove('speaking');
+    if (currentSpeakBtn === btnEl) currentSpeakBtn = null;
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function toggleAutoTts() {
+  autoTts = !autoTts;
+  const btn = document.getElementById('btnAutoTts');
+  btn.textContent = autoTts ? '🔊 Auto-uppläsning: PÅ' : '🔊 Auto-uppläsning: AV';
+  btn.style.borderColor = autoTts ? 'var(--green)' : '';
+  if (autoTts) {
+    speakText("Automatisk uppläsning är nu påslagen.");
+  } else {
+    stopSpeech();
+  }
+}
+
+function ttsButton(textToRead, label = "Lyssna") {
+  const safe = textToRead.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  return `<button type="button" class="btn-tts" onclick="speakText('${safe}', this)">🔊 ${label}</button>`;
+}
+
+/* =========================================================
+   2. ANTI-PASTE & TOAST GUARDRAILS
+   ========================================================= */
+let toastTimeout = null;
+function showToast(msg, isSuccess = false) {
+  const el = document.getElementById('toast');
+  el.style.backgroundColor = isSuccess ? '#14532d' : '#991b1b';
+  el.style.borderColor = isSuccess ? '#22c55e' : '#f87171';
+  el.textContent = msg;
+  el.style.display = 'block';
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    el.style.display = 'none';
+  }, 3600);
+}
+
+function attachAntiPaste(el) {
+  if (!el) return;
+  el.addEventListener('paste', (e) => {
+    e.preventDefault();
+    showToast("🚫 Klistra in är avstängt! Skriv svaret med era egna ord.");
+  });
+  el.addEventListener('drop', (e) => {
+    e.preventDefault();
+    showToast("🚫 Dra-och-släpp text är avstängt! Skriv med egna ord.");
+  });
+
+  let lastVal = el.value || '';
+  el.addEventListener('input', () => {
+    const diff = el.value.length - lastVal.length;
+    if (diff > 18) {
+      el.value = lastVal;
+      showToast("🚫 För många tecken på en gång! Skriv svaret själva.");
+    } else {
+      lastVal = el.value;
+    }
+  });
+}
+
+function wireAllNoPasteInputs() {
+  document.querySelectorAll('.no-paste').forEach(attachAntiPaste);
+}
+
+function insertStarter(textareaId, starterText) {
+  const el = document.getElementById(textareaId);
+  if (!el) return;
+  el.value = starterText;
+  el.focus();
+  el.dispatchEvent(new Event('input'));
+}
+
+/* =========================================================
+   3. APP STATE & CURRICULUM DATA (FRESH SCENARIOS ONLY)
+   ========================================================= */
+const state = {
+  stage: 0, // 0: Start, 1: Reklam- & mytgranskaren, 2: Källkritik & Samband vs Orsak, 3: Slutsats-verkstaden, 4: Granska hel studie, 5: Stora Muntliga Slutgenrepet, 6: Bonus C/A, 7: Sammanfattning
+  startTime: Date.now(),
+  student1: '',
+  student2: '',
+  classGroup: '',
+
+  // Class Walkthrough / Overview Mode (toggled via Shift+L)
+  teacherMode: false,
+  teacherOverviewExpanded: true,
+
+  // Stage 1: Claim & Ad Detector
+  s1Index: 0,
+  s1Score: 0,
+  s1Answered: false,
+  s1ChosenIdx: null,
+  pair1Text: '',
+  pair1Spoken: false,
+
+  // Stage 2: Source Criticism & Correlation vs Causation
+  s2DefAnswered: false,
+  s2DefCorrect: false,
+  s2CaseIndex: 0,
+  s2CaseAnswered: false,
+  s2CaseChosenIdx: null,
+  s2CaseScore: 0,
+  s2WhyAnswered: false,
+  s2WhyCorrect: false,
+
+  // Stage 3: Conclusion Workshop
+  s3Fix1Done: false,
+  s3Fix2Done: false,
+  conc1Text: '',
+  conc2Text: '',
+  pair2Spoken: false,
+
+  // Stage 4: Evaluate & Improve a Full Study
+  selectedStudy: 'gloves', // 'gloves' or 'light'
+  studyGood: '',
+  studyFlaw: '',
+  studyImprove: '',
+  studyWhyText: '',
+
+  // Stage 5: Final Oral Exam Dress Rehearsal (All 5 Core Exam Areas)
+  s5Index: 0,
+  s5Revealed: false,
+  s5Ratings: [],
+  s5TimerVal: 45,
+  s5TimerRunning: false,
+
+  // Stage 6: Optional C/A Bonus (Correlation vs Causation + Conflict of Interest)
+  didBonus: false,
+  caCorrAnswered: false,
+  caCorrCorrect: false,
+  caText: ''
+};
+
+let oralInterval = null;
+
+const stageMeta = [
+  { name: "Start: Par-incheckning", short: "Start", pct: 0, time: "Ca 40 min totalt" },
+  { name: "Etapp 1: Reklam- och mytgranskaren", short: "Etapp 1: Källkritik", pct: 15, time: "~8 min" },
+  { name: "Etapp 2: Vetenskap vs. Reklam & Samband", short: "Etapp 2: Granska källor", pct: 32, time: "~8 min" },
+  { name: "Etapp 3: Slutsats- & felkälle-verkstaden", short: "Etapp 3: Slutsatser", pct: 50, time: "~8 min" },
+  { name: "Etapp 4: Granska & förbättra en undersökning", short: "Etapp 4: Granska studie", pct: 68, time: "~7 min" },
+  { name: "Etapp 5: Stora muntliga slutgenrepet", short: "Etapp 5: Slutgenrep", pct: 84, time: "~6 min" },
+  { name: "Bonus-etapp: Sikta mot C/A (Samband & orsak)", short: "Bonus C/A", pct: 94, time: "~4 min (Valfri)" },
+  { name: "Klar! Kopiera till Google Classroom", short: "Sammanfattning", pct: 100, time: "Färdig!" }
+];
+
+// STAGE 1 DATA: Reklam- och mytgranskaren (Spotting unscientific claims in everyday life/ads)
+const s1Cases = [
+  {
+    badge: "Fall 1 av 4 • TikTok-klipp om 'Mirakelfärg'",
+    title: "”Vetenskapligt bevisad värmefärg!”",
+    scenario: "I ett viralt klipp på sociala medier målar en person en liten träbit med ’NASA-värmefärg’, håller en tändare mot den i 3 sekunder och säger: ’Den här färgen sänker din elräkning med 50 %! 15 000 gilla-markeringar kan inte ha fel!’",
+    question: "Varför håller inte det här som vetenskapligt bevis?",
+    options: [
+      { text: "Det är ett enskilt reklamklipp utan kontrollgrupp, utan riktiga temperaturmätningar och antal likes bevisar ingenting vetenskapligt.", correct: true },
+      { text: "För att målarfärg aldrig går att testa med värme.", correct: false },
+      { text: "För att klippet borde ha varit längre än en timme.", correct: false }
+    ],
+    explanation: "Helt rätt! Antal likes eller en persons upplevelse (anekdotisk bevisföring) är inte vetenskap. Det saknas kontrollgrupp, mätdata och oberoende testning."
+  },
+  {
+    badge: "Fall 2 av 4 • Dammfilter från tillverkaren själv",
+    title: "Företagets egen hemliga testrapport",
+    scenario: "Ett företag som säljer andningsskydd skriver på förpackningen: ’Vårt filter stoppar 99,9 % av allt byggdamm enligt vår egen interna studie.’ När Arbetsmiljöverket ber att få se hur testet gick till säger företaget att det är affärshemlighet.",
+    question: "Vilket källkritiskt problem är störst här?",
+    options: [
+      { text: "Intressekonflikt och brist på insyn – företaget tjänar pengar på produkten och ingen utomstående forskare har fått granska eller upprepa studien.", correct: true },
+      { text: "Att 99,9 % är ett jämnt tal.", correct: false },
+      { text: "Att byggdamm inte finns på vanliga byggarbetsplatser.", correct: false }
+    ],
+    explanation: "Mitt i prick! När avsändaren tjänar pengar på resultatet finns en tydlig intressekonflikt. Vetenskapliga studier måste vara öppna och granskade av oberoende experter."
+  },
+  {
+    badge: "Fall 3 av 4 • Energidryck och färre misstag på bygget",
+    title: "Blandar ihop samband med orsak",
+    scenario: "En undersökning visar att byggarbetare som dricker en viss energidryck på morgonen gör färre mätfel under dagen än de som inte dricker den. Reklamen påstår: ’Vår dryck gör din hjärna skarpare!’ – men det visar sig att de som drack drycken också sov 1,5 timme längre per natt.",
+    question: "Varför är reklamens slutsats felaktig?",
+    options: [
+      { text: "De blandar ihop samband med orsak – färre misstag kan bero på mer sömn, inte på energidrycken.", correct: true },
+      { text: "För att mätfel alltid beror på dåliga tumstockar.", correct: false },
+      { text: "För att energidryck bara får drickas på kvällen.", correct: false }
+    ],
+    explanation: "Snyggt! Bara för att två saker hänger ihop (samband) betyder det inte att det ena orsakar det andra. Här var sömnen en bakomliggande faktor."
+  },
+  {
+    badge: "Fall 4 av 4 • Skrikande tidningsrubrik om lyftbälten",
+    title: "”CHOCKEN: Ryggbälten räddar ALLA byggjobbare!”",
+    scenario: "En kvällstidning skriver en jätterubrik om att ryggbälten helt stoppar ryggskador. När man läser själva forskningsstudien som tidningen hänvisar till står det: ’En liten minskning av trötthet syntes hos 12 personer under 3 dagar, men fler studier behövs.’",
+    question: "Vad lär oss det här om källkritik?",
+    options: [
+      { text: "Man bör gå till ursprungskällan (själva studien) – tidningsrubriker överdriver ofta slutsatserna för att få klick.", correct: true },
+      { text: "Att man aldrig ska läsa några texter alls.", correct: false },
+      { text: "Att 12 personer i 3 dagar räcker för att bevisa allt i hela världen.", correct: false }
+    ],
+    explanation: "Exakt! Att kolla ursprungskällan avslöjar om en rubrik eller reklam har överdrivit vad forskarna faktiskt kom fram till."
+  }
+];
+
+// STAGE 2 DATA: Source Criticism & Correlation vs Causation
+const s2Cases = [
+  {
+    title: "Scenario A: Oberoende forskningsinstitut vs. Säljbrochyr",
+    desc: "Ni ska välja mellan två olika isoleringsmaterial till ett nybygge. Alternativ 1 hänvisar till en studie publicerad i en vetenskaplig tidskrift som granskats av oberoende forskare (peer review). Alternativ 2 hänvisar till en blogg skriven av tillverkarens marknadschef.",
+    question: "Vilken källa är mest vetenskapligt trovärdig och varför?",
+    options: [
+      { text: "Alternativ 1 – studien är oberoende granskad av andra experter och tillverkaren har inte kunnat styra resultatet för att sälja mer.", correct: true },
+      { text: "Alternativ 2 – marknadschefen känner sin egen produkt bäst och har snyggast bilder.", correct: false },
+      { text: "Båda är exakt lika trovärdiga eftersom båda nämner ordet ’isolering’.", correct: false }
+    ],
+    explanation: "Klockrent! Oberoende granskning (peer review) och avsaknad av ekonomiska vinstintressen gör en källa betydligt mer pålitlig."
+  },
+  {
+    title: "Scenario B: ”Dyrare skruvdragare ger rakare väggar”",
+    desc: "Statistik från 50 byggen visar att snickare som äger skruvdragare för över 4 000 kr bygger rakare väggar än snickare med billigare maskiner. En butik säger: ’Köp vår dyra maskin så bygger du rakare!’",
+    question: "Vad är den mest troliga förklaringen till sambandet?",
+    options: [
+      { text: "Erfarna yrkessnickare köper oftare dyra verktyg OCH bygger rakare tack vare sin yrkeserfarenhet – maskinen i sig gör inte väggen rak.", correct: true },
+      { text: "Dyra skruvdragare har inbyggd magi som rätar ut sneda reglar.", correct: false },
+      { text: "Billiga skruvdragare fungerar bara på måndagar.", correct: false }
+    ],
+    explanation: "Rätt! Yrkeserfarenhet är den bakomliggande faktorn som förklarar både verktygsköpet och hantverksskickligheten."
+  }
+];
+
+// STAGE 4 DATA: Study evaluation configs
+const studyConfigs = {
+  gloves: {
+    name: "Kylhandskar vid asfaltläggning på sommaren",
+    summary: "Ett forskarteam testade om en ny typ av ventilerande arbetshandskar minskar handsvett och obehag vid asfaltläggning i 28 °C värme. 24 asfaltläggare delades slumpvis i två grupper (12 fick de nya handskarna, 12 fick vanliga arbetshandskar). Alla jobbade på samma vägsträcka i 4 timmar och man mätte fukten inuti handskarna efteråt. Deltagarna visste dock vilka handskar de hade på sig.",
+    goodOptions: [
+      "Det fanns en kontrollgrupp (vanliga handskar), slumpvis indelning och exakt samma temperatur och arbetstid för båda grupperna.",
+      "Att deltagarna själva fick gissa vilken handske som var dyrast."
+    ],
+    flawOptions: [
+      "Deltagarna visste vilka handskar de bar (ingen blindstudie) och testet pågick bara i 4 timmar en enda dag.",
+      "Att testet gjordes utomhus på sommaren."
+    ],
+    improveOptions: [
+      "Testa på fler personer under flera veckor och låta deltagarna bedöma komforten utan att veta vilket märke eller pris handsken har.",
+      "Ta bort kontrollgruppen så att alla får de nya handskarna."
+    ],
+    demoWhy: "Undersökningen är ganska pålitlig eftersom den har en kontrollgrupp, slumpvis fördelning och mäter fukt objektivt. En felkälla är att arbetarna visste att de testade en ny produkt (förväntningar/placebo) och att testtiden var kort."
+  },
+  light: {
+    name: "LED-arbetsbelysning med dagsljusfilter i källare",
+    summary: "En elfirma undersökte om LED-lampor med dagsljusfilter gör att elektriker blir mindre trötta i huvudet vid jobb i mörka källare. 10 elektriker jobbade i källare A med dagsljus-LED i en vecka. 10 andra elektriker jobbade i källare B med gamla lysrör i en vecka. Källare B var dock kallare och hade sämre ventilation. Efter veckan fick alla svara på hur trötta de kände sig.",
+    goodOptions: [
+      "Det fanns två grupper att jämföra (behandlingsgrupp med ny LED och kontrollgrupp med gamla lysrör) under en hel arbetsvecka.",
+      "Att källare B var kallare och hade sämre luft."
+    ],
+    flawOptions: [
+      "Flera faktorer skilde sig åt samtidigt – källare B var kallare och hade sämre ventilation, vilket också kan orsaka huvudvärk och trötthet.",
+      "Att elektrikerna använde elverktyg i källaren."
+    ],
+    improveOptions: [
+      "Göra testet i likadana rum med samma temperatur och ventilation så att belysningen är den enda faktorn som ändras, samt ha fler deltagare.",
+      "Byta ut elektrikerna mot målare mitt i veckan."
+    ],
+    demoWhy: "Det är bra att det finns en kontrollgrupp, men en stor felkälla är att rumstemperatur och ventilation inte var likadana i båda källarna. Då vet vi inte om tröttheten berodde på ljuset eller dålig luft."
+  }
+};
+
+// STAGE 5 DATA: Final Oral Exam Dress Rehearsal (Covering the entire unit)
+const s5Questions = [
+  {
+    q: "1. Vad skiljer ett vetenskapligt påstående från en personlig åsikt eller reklam?",
+    checklist: [
+      "Ett vetenskapligt påstående bygger på systematiska undersökningar, mätningar och bevis som går att testa och upprepa.",
+      "Åsikter eller reklam bygger ofta på tyckande, enstaka upplevelser eller vinstintresse utan kontrollerade bevis."
+    ]
+  },
+  {
+    q: "2. Förklara begreppen hypotes, behandlingsgrupp och kontrollgrupp.",
+    checklist: [
+      "Hypotes: ett testbart påstående om vad man tror ska hända (skrivs inte som en fråga).",
+      "Behandlingsgrupp: gruppen som utsätts för faktorn/behandlingen som testas.",
+      "Kontrollgrupp: jämförelsegruppen som inte får behandlingen."
+    ]
+  },
+  {
+    q: "3. Varför behövs en kontrollgrupp, och varför får man bara ändra en faktor åt gången?",
+    checklist: [
+      "Kontrollgruppen visar hur det blir utan behandlingen så att man kan se den verkliga effekten.",
+      "Ändrar man bara en faktor i taget (håller allt annat lika) vet man säkert vad som orsakade skillnaden."
+    ]
+  },
+  {
+    q: "4. Hur granskar du källkritiskt en artikel eller reklam som säger ”Vetenskapligt bevisat”?",
+    checklist: [
+      "Kolla avsändaren/intressekonflikter (tjänar de pengar på att sälja produkten?).",
+      "Kolla om studien är granskad av oberoende forskare, om det fanns kontrollgrupp och vad ursprungskällan faktiskt säger."
+    ]
+  },
+  {
+    q: "5. Ge exempel på en felkälla i en undersökning och hur man gör studien mer pålitlig (C/A).",
+    checklist: [
+      "Felkälla: t.ex. för få försökspersoner (slump), olika förutsättningar i grupperna eller placeboeffekt.",
+      "Förbättring: göra många försök, ha slumpvis urval, hålla variabler lika eller använda blindstudie."
+    ]
+  }
+];
+
+/* =========================================================
+   4. CLASS OVERVIEW & WALKTHROUGH MODE (Shift+L / Shift+F)
+   ========================================================= */
+document.addEventListener('keydown', (e) => {
+  const active = document.activeElement;
+  if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT')) {
+    return;
+  }
+  if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+  if (e.shiftKey && (e.code === 'KeyL' || e.key === 'L' || e.key === 'l')) {
+    e.preventDefault();
+    toggleTeacherMode();
+  } else if (e.shiftKey && (e.code === 'KeyF' || e.key === 'F' || e.key === 'f')) {
+    e.preventDefault();
+    demoForwardStep();
+  }
+});
+
+function toggleTeacherMode() {
+  state.teacherMode = !state.teacherMode;
+  if (state.teacherMode) {
+    state.teacherOverviewExpanded = true;
+    showToast("📋 Lektionsöversikt visad för genomgång!", true);
+  } else {
+    showToast("Lektionsöversikt stängd.");
+  }
+  render();
+}
+
+function jumpToStage(targetStage) {
+  if (!state.student1) state.student1 = "Exempel-Elev 1";
+  if (!state.student2) state.student2 = "Exempel-Elev 2";
+  state.stage = targetStage;
+  render();
+}
+
+function demoForwardStep() {
+  if (!state.student1) state.student1 = "Exempel-Elev 1";
+  if (!state.student2) state.student2 = "Exempel-Elev 2";
+
+  if (state.stage === 0) {
+    if (!state.classGroup) state.classGroup = "BA23A";
+    state.stage = 1;
+    render();
+    return;
+  }
+
+  if (state.stage === 1) {
+    if (state.s1Index < s1Cases.length) {
+      if (!state.s1Answered) {
+        const correctIdx = s1Cases[state.s1Index].options.findIndex(o => o.correct);
+        answerS1(correctIdx);
+      } else {
+        nextS1();
+      }
+    } else {
+      if (!state.pair1Text || state.pair1Text.length < 15) {
+        state.pair1Text = "Man bör kolla vem som ligger bakom påståendet (intressekonflikter), om det finns en riktig studie med kontrollgrupp och om oberoende forskare har granskat resultatet.";
+      }
+      state.pair1Spoken = true;
+      state.stage = 2;
+      render();
+    }
+    return;
+  }
+
+  if (state.stage === 2) {
+    if (!state.s2DefCorrect) {
+      answerS2Def(true);
+    } else if (state.s2CaseIndex < s2Cases.length) {
+      if (!state.s2CaseAnswered) {
+        const correctIdx = s2Cases[state.s2CaseIndex].options.findIndex(o => o.correct);
+        answerS2Case(correctIdx);
+      } else if (state.s2CaseIndex < s2Cases.length - 1) {
+        state.s2CaseIndex++;
+        state.s2CaseAnswered = false;
+        state.s2CaseChosenIdx = null;
+        render();
+      } else if (!state.s2WhyCorrect) {
+        answerS2Why(true);
+      } else {
+        state.stage = 3;
+        render();
+      }
+    }
+    return;
+  }
+
+  if (state.stage === 3) {
+    if (!state.s3Fix1Done) {
+      state.s3Fix1Done = true;
+      render();
+    } else if (!state.s3Fix2Done) {
+      state.s3Fix2Done = true;
+      render();
+    } else {
+      if (!state.conc1Text || state.conc1Text.length < 15) {
+        state.conc1Text = "Resultatet visar att den nya skruvdragaren minskade upplevd trötthet i handleden hos de här 20 snickarna under två veckors skruvning i gips.";
+      }
+      if (!state.conc2Text || state.conc2Text.length < 15) {
+        state.conc2Text = "En felkälla är att snickarna visste vilken maskin som var ny (förväntningar) och att vi bara testade i två veckor på gips, så vi vet inte hur den håller på ett helt år.";
+      }
+      state.pair2Spoken = true;
+      state.stage = 4;
+      render();
+    }
+    return;
+  }
+
+  if (state.stage === 4) {
+    const sc = studyConfigs[state.selectedStudy];
+    if (!state.studyGood || !state.studyFlaw || !state.studyImprove) {
+      state.studyGood = sc.goodOptions[0];
+      state.studyFlaw = sc.flawOptions[0];
+      state.studyImprove = sc.improveOptions[0];
+      render();
+    } else {
+      if (!state.studyWhyText || state.studyWhyText.length < 15) {
+        state.studyWhyText = sc.demoWhy;
+      }
+      state.stage = 5;
+      render();
+    }
+    return;
+  }
+
+  if (state.stage === 5) {
+    if (!state.s5Revealed) {
+      revealOral();
+    } else {
+      rateOral('green');
+    }
+    return;
+  }
+
+  if (state.stage === 6) {
+    if (!state.caCorrCorrect) {
+      answerCaCorr(true);
+    } else {
+      if (!state.caText || state.caText.length < 10) {
+        state.caText = "Ett samband betyder bara att två saker förekommer samtidigt, medan ett orsakssamband kräver ett kontrollerat experiment där man ser att A faktiskt orsakar B.";
+      }
+      state.didBonus = true;
+      state.stage = 7;
+      render();
+    }
+    return;
+  }
+
+  if (state.stage === 7) {
+    showToast("Ni är redan på sista sidan (Sammanfattning)!", true);
+  }
+}
+
+function renderTeacherBanner() {
+  if (!state.teacherMode) return '';
+
+  const overviewSpeech = "Välkomna till Lektion 3: Bygglabbet – Källkritik och Slutgenrep! Idag avslutar vi hela arbetsområdet i Naturkunskap 1a1 genom att träna i par i cirka 40 minuter inför det muntliga provet. Lektionen har fem etapper: 1. Reklam- och mytgranskaren, där ni genomskådar ovetenskapliga påståenden. 2. Vetenskap mot reklam samt samband och orsak. 3. Slutsats- och felkälle-verkstaden, där ni övar på vad ett resultat faktiskt visar. 4. Granska och förbättra en hel undersökning. 5. Stora muntliga slutgenrepet med fem provfrågor och timer, samt en valfri bonusuppgift på C- och A-nivå. Glöm inte att kopiera er sammanfattning och klistra in den under Lektion 2 i Google Classroom när ni är klara!";
+
+  return `
+    <div class="teacher-panel">
+      <div class="teacher-panel-top">
+        <div class="teacher-title">
+          <span>📋 GENOMGÅNG & LEKTIONSÖVERSIKT • Lektion 3 av 3</span>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          ${ttsButton(overviewSpeech, "Läs upp översikten")}
+          <button type="button" class="teacher-action-btn" onclick="demoForwardStep()">
+            ⏩ Visa nästa steg (Shift+F)
+          </button>
+          <button type="button" class="teacher-action-btn" onclick="state.teacherOverviewExpanded = !state.teacherOverviewExpanded; render();">
+            ${state.teacherOverviewExpanded ? '▲ Dölj översikt' : '▼ Visa översikt'}
+          </button>
+          <button type="button" class="teacher-action-btn" onclick="toggleTeacherMode()">
+            ✕ Stäng (Shift+L)
+          </button>
+        </div>
+      </div>
+
+      ${state.teacherOverviewExpanded ? `
+        <div class="teacher-overview-box">
+          <strong>Välkomna till Lektion 3: Bygglabbet – Källkritik & Slutgenrep! (ca 40 min)</strong>
+          <p style="margin: 6px 0;">
+            Idag jobbar ni i <strong>par</strong> och knyter ihop hela momentet <em>Naturvetenskapligt arbetssätt & källkritik</em> inför det muntliga provet i <em>Naturkunskap 1a1</em>:
+          </p>
+          <ul>
+            <li><strong>Etapp 1 – Reklam- & mytgranskaren (~8 min):</strong> Ni granskar 4 påståenden från sociala medier, reklam och rubriker + <em>Par-snack #1</em>.</li>
+            <li><strong>Etapp 2 – Vetenskap vs. Reklam & Samband (~8 min):</strong> Ni tränar på oberoende granskning, intressekonflikter samt skillnaden mellan samband och orsak.</li>
+            <li><strong>Etapp 3 – Slutsats- & felkälle-verkstaden (~8 min):</strong> Ni övar på att dra rimliga slutsatser utan att överdriva och hittar felkällor + <em>Par-snack #2</em>.</li>
+            <li><strong>Etapp 4 – Granska & förbättra en undersökning (~7 min):</strong> Ni analyserar en hel arbetsplatsstudie (styrkor, felkällor och hur man höjer pålitligheten).</li>
+            <li><strong>Etapp 5 – Stora muntliga slutgenrepet (~6 min) + Valfri Bonus C/A:</strong> Ni övar högt på 5 sammanfattande provfrågor med timer och checklista.</li>
+          </ul>
+          <p style="margin: 8px 0 0 0; color: #cbd5e1;">
+            <strong>💡 Tips innan ni börjar:</strong> Använd gärna <strong>🔊 Lyssna</strong>-knappen, prata igenom svaren högt i paret och klistra in er färdiga sammanfattning under Lektion 2 i <strong>Google Classroom</strong> på slutet!
+          </p>
+        </div>
+      ` : ''}
+
+      <div style="font-size: 0.85rem; color: #c7d2fe; font-weight: 700;">Förhandsvisa en etapp för klassen:</div>
+      <div class="teacher-nav-grid">
+        ${stageMeta.map((m, idx) => `
+          <button type="button" class="teacher-stage-btn ${state.stage === idx ? 'active' : ''}" onclick="jumpToStage(${idx})">
+            ${escapeHtml(m.short)}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/* =========================================================
+   5. RENDERING FUNCTIONS
+   ========================================================= */
+function updateHeader() {
+  const meta = stageMeta[state.stage] || stageMeta[0];
+  document.getElementById('stageLabel').textContent = meta.name;
+  document.getElementById('timeEstimate').textContent = meta.time;
+  document.getElementById('progressBar').style.width = meta.pct + '%';
+}
+
+function render() {
+  stopSpeech();
+  clearInterval(oralInterval);
+  state.s5TimerRunning = false;
+  updateHeader();
+
+  const container = document.getElementById('appContainer');
+  let html = renderTeacherBanner();
+
+  if (state.stage === 0) html += renderStart();
+  else if (state.stage === 1) html += renderStage1();
+  else if (state.stage === 2) html += renderStage2();
+  else if (state.stage === 3) html += renderStage3();
+  else if (state.stage === 4) html += renderStage4();
+  else if (state.stage === 5) html += renderStage5();
+  else if (state.stage === 6) html += renderStage6();
+  else if (state.stage === 7) html += renderSummary();
+
+  container.innerHTML = html;
+  wireAllNoPasteInputs();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (autoTts) {
+    const autoTarget = document.querySelector('[data-autoread]');
+    if (autoTarget) {
+      setTimeout(() => speakText(autoTarget.getAttribute('data-autoread')), 250);
+    }
+  }
+}
+
+/* --- STAGE 0: START --- */
+function renderStart() {
+  const introText = "Välkomna till Lektion 3: Bygglabbet – Källkritik och Slutgenrep! Idag ska ni jobba i par i cirka 40 minuter och träna på källkritik, felkällor och ett komplett muntligt slutgenrep inför provet.";
+  return `
+    <div class="card">
+      <div class="card-header-row">
+        <div>
+          <span class="tag tag-pair">👷 Pararbete • Lektion 3 av 3 (Finalpasset)</span>
+          <h1>Bygglabbet: Källkritik & Slutgenrep</h1>
+        </div>
+        ${ttsButton(introText, "Lyssna på intro")}
+      </div>
+      <p data-autoread="${introText.replace(/"/g, '&quot;')}">
+        Idag knyter ni ihop hela kursmomentet inför det <strong>muntliga provet</strong>:
+      </p>
+      <ul>
+        <li>Hur ni genomskådar <strong>reklam, myter och vinklade rubriker</strong> som påstår att något är ”vetenskapligt bevisat”.</li>
+        <li>Skillnaden mellan <strong>samband och orsak</strong> samt vad <strong>oberoende granskning</strong> innebär.</li>
+        <li>Hur ni drar <strong>rimliga slutsatser</strong>, hittar <strong>felkällor</strong> och klarar hela <strong>slutgenrepet</strong> med bravur.</li>
+      </ul>
+
+      <div style="background: var(--bg-card-alt); padding: 18px; border-radius: 12px; border: 1px solid var(--border); margin: 20px 0;">
+        <h3>Skriv in era namn</h3>
+        <div class="no-paste-badge">✍️ Skriv era namn nedan</div>
+        <label for="inpS1">Elev 1 (För- och efternamn):</label>
+        <input type="text" id="inpS1" placeholder="T.ex. Alex Andersson" value="${escapeHtml(state.student1)}" />
+
+        <label for="inpS2">Elev 2 (För- och efternamn – eller 'Ensam'):</label>
+        <input type="text" id="inpS2" placeholder="T.ex. Samira Lind" value="${escapeHtml(state.student2)}" />
+
+        <label for="inpClass">Klass / Grupp (valfritt):</label>
+        <input type="text" id="inpClass" placeholder="T.ex. BA23A" value="${escapeHtml(state.classGroup)}" />
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+        <button type="button" class="btn-secondary" onclick="speakText('Ljudet fungerar fint på Chromebooken. Nu kör vi igång med finalpasset i Bygglabbet!', this)">
+          🔊 Testa ljudet
+        </button>
+        <button type="button" class="btn-primary" onclick="startApp()">
+          Starta Etapp 1 →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function startApp() {
+  const s1 = document.getElementById('inpS1').value.trim();
+  const s2 = document.getElementById('inpS2').value.trim();
+  const cls = document.getElementById('inpClass').value.trim();
+  if (!s1) {
+    showToast("Skriv in minst ett namn innan ni startar!");
+    return;
+  }
+  state.student1 = s1;
+  state.student2 = s2 || "Ingen parkompis angiven";
+  state.classGroup = cls;
+  state.startTime = Date.now();
+  state.stage = 1;
+  render();
+}
+
+/* --- STAGE 1: REKLAM- OCH MYTGRANSKAREN --- */
+function renderStage1() {
+  if (state.s1Index < s1Cases.length) {
+    const c = s1Cases[state.s1Index];
+    const fullAudio = `${c.title}. ${c.scenario}. ${c.question}. Alternativ 1: ${c.options[0].text}. Alternativ 2: ${c.options[1].text}. Alternativ 3: ${c.options[2].text}.`;
+
+    let optsHtml = '';
+    c.options.forEach((opt, idx) => {
+      let cls = 'option-btn';
+      if (state.s1Answered) {
+        if (opt.correct) cls += ' correct';
+        else if (state.s1ChosenIdx === idx) cls += ' wrong';
+      }
+      optsHtml += `
+        <button type="button" class="${cls}" ${state.s1Answered ? 'disabled' : ''} onclick="answerS1(${idx})">
+          ${escapeHtml(opt.text)}
+        </button>
+      `;
+    });
+
+    const isLast = state.s1Index === s1Cases.length - 1;
+    const isCorrect = state.s1Answered && c.options[state.s1ChosenIdx]?.correct;
+
+    return `
+      <div class="card">
+        <div class="card-header-row">
+          <div>
+            <span class="tag tag-e">E-nivå • ${c.badge}</span>
+            <h2>Reklam- & mytgranskaren: ${escapeHtml(c.title)}</h2>
+          </div>
+          ${ttsButton(fullAudio, "Lyssna")}
+        </div>
+
+        <div style="background: var(--bg-card-alt); border-left: 5px solid var(--accent); padding: 18px; border-radius: 10px; margin: 14px 0;" data-autoread="${fullAudio.replace(/"/g, '&quot;')}">
+          ${escapeHtml(c.scenario)}
+        </div>
+
+        <p style="font-weight: 700; font-size: 1.1rem;">${escapeHtml(c.question)}</p>
+
+        <div class="options-grid">
+          ${optsHtml}
+        </div>
+
+        <div class="feedback-box ${state.s1Answered ? 'show ' + (isCorrect ? 'ok' : 'err') : ''}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+            <div>
+              <strong>${isCorrect ? '✅ Bra genomskådat!' : '💡 Kolla vad som brister källkritiskt:'}</strong><br/>
+              ${escapeHtml(c.explanation)}
+            </div>
+            ${ttsButton(c.explanation, "Lyssna")}
+          </div>
+        </div>
+
+        <div class="nav-footer">
+          <span style="color: var(--text-muted);">Poäng i etappen: ${state.s1Score} / ${s1Cases.length}</span>
+          ${state.s1Answered ? `
+            <button type="button" class="btn-primary" onclick="nextS1()">
+              ${isLast ? 'Till Par-snack #1 →' : 'Nästa fall →'}
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  } else {
+    const pairPrompt = "Par-snack 1: Turas om att berätta högt för varandra. Vilka kontrollfrågor ska man ställa när reklam eller en tidning påstår att något är vetenskapligt bevisat? Skriv sedan ner er sammanfattning.";
+    return `
+      <div class="card">
+        <div class="card-header-row">
+          <div>
+            <span class="tag tag-pair">🗣️ Par-snack #1 • Källkritiska glasögon</span>
+            <h2>Sammanfatta högt för varandra!</h2>
+          </div>
+          ${ttsButton(pairPrompt, "Lyssna")}
+        </div>
+        <p data-autoread="${pairPrompt.replace(/"/g, '&quot;')}">
+          Utifrån de fyra fallen ni nyss granskade: berätta högt för varandra vad man ska kolla innan man litar på ett påstående om att något ”funkar” eller är ”vetenskapligt bevisat”.
+        </p>
+
+        <div class="pair-box">
+          <div class="no-paste-badge">🚫 Klistra in är avstängt – skriv med era egna ord</div>
+          <label for="txtPair1">Skriv ner minst två saker ni kollar för att avgöra om ett påstående är trovärdigt:</label>
+          <div class="starter-chips">
+            <button type="button" class="chip-btn" onclick="insertStarter('txtPair1', 'För att avgöra om ett påstående går att lita på bör man kolla ')">
+              + Starta meningen
+            </button>
+          </div>
+          <textarea id="txtPair1" class="no-paste" rows="3" placeholder="För att avgöra om ett påstående går att lita på bör man kolla...">${escapeHtml(state.pair1Text)}</textarea>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="chkPair1" ${state.pair1Spoken ? 'checked' : ''} />
+            <span>Vi har pratat igenom svaret högt med varandra!</span>
+          </label>
+        </div>
+
+        <div class="nav-footer">
+          <button type="button" class="btn-secondary" onclick="state.s1Index = 0; state.s1Answered = false; render();">← Gör om fallen</button>
+          <button type="button" class="btn-primary" onclick="finishStage1()">Vidare till Etapp 2 →</button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function answerS1(idx) {
+  if (state.s1Answered) return;
+  state.s1Answered = true;
+  state.s1ChosenIdx = idx;
+  if (s1Cases[state.s1Index].options[idx].correct) {
+    state.s1Score++;
+  }
+  render();
+  if (autoTts) speakText(s1Cases[state.s1Index].explanation);
+}
+
+function nextS1() {
+  state.s1Index++;
+  state.s1Answered = false;
+  state.s1ChosenIdx = null;
+  render();
+}
+
+function finishStage1() {
+  const txt = document.getElementById('txtPair1').value.trim();
+  const chk = document.getElementById('chkPair1').checked;
+  if (txt.length < 15) {
+    showToast("Skriv minst en mening i rutan innan ni går vidare!");
+    return;
+  }
+  if (!chk) {
+    showToast("Kryssa i rutan när ni har pratat igenom svaret högt!");
+    return;
+  }
+  state.pair1Text = txt;
+  state.pair1Spoken = true;
+  state.stage = 2;
+  render();
+}
+
+/* --- STAGE 2: VETENSKAP VS REKLAM & SAMBAND VS ORSAK --- */
+function renderStage2() {
+  const c = s2Cases[state.s2CaseIndex];
+  const introAudio = "Etapp 2: Vetenskap mot reklam samt samband och orsak. Här tränar ni på att skilja på seriös forskning och säljargument.";
+
+  return `
+    <div class="card">
+      <div class="card-header-row">
+        <div>
+          <span class="tag tag-e">E/C-nivå • Källkritik i praktiken</span>
+          <h2>Vetenskap vs. Reklam & Samband</h2>
+        </div>
+        ${ttsButton(introAudio, "Lyssna")}
+      </div>
+
+      <h3>Del 1: Vad utmärker en vetenskaplig studie till skillnad från reklam?</h3>
+      <div class="options-grid">
+        <button type="button" class="option-btn ${state.s2DefAnswered ? (state.s2DefCorrect ? 'correct' : 'wrong') : ''}"
+          onclick="answerS2Def(true)">
+          Den bygger på systematiska mätningar och kontrollerade försök, redovisar hur testet gick till och granskas av oberoende forskare.
+        </button>
+        <button type="button" class="option-btn ${state.s2DefAnswered && !state.s2DefCorrect ? 'wrong' : ''}"
+          onclick="answerS2Def(false)">
+          Den använder flest utropstecken och kända influencers som säger att produkten är bäst.
+        </button>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 24px 0;" />
+
+      <h3>Del 2: Källkritiska bygg-test (${state.s2CaseIndex + 1} av ${s2Cases.length})</h3>
+      <div style="background: var(--bg-card-alt); border-left: 5px solid var(--blue); padding: 18px; border-radius: 10px; margin: 12px 0;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+          <div>
+            <strong>${escapeHtml(c.title)}</strong>
+            <p style="margin: 8px 0 0 0;">${escapeHtml(c.desc)}</p>
+          </div>
+          ${ttsButton(`${c.title}. ${c.desc}. ${c.question}`, "Lyssna")}
+        </div>
+      </div>
+
+      <p><strong>${escapeHtml(c.question)}</strong></p>
+      <div class="options-grid">
+        ${c.options.map((opt, idx) => {
+          let cls = 'option-btn';
+          if (state.s2CaseAnswered) {
+            if (opt.correct) cls += ' correct';
+            else if (state.s2CaseChosenIdx === idx) cls += ' wrong';
+          }
+          return `<button type="button" class="${cls}" ${state.s2CaseAnswered ? 'disabled' : ''} onclick="answerS2Case(${idx})">${escapeHtml(opt.text)}</button>`;
+        }).join('')}
+      </div>
+
+      <div class="feedback-box ${state.s2CaseAnswered ? 'show ' + (c.options[state.s2CaseChosenIdx]?.correct ? 'ok' : 'err') : ''}">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+          <div>${escapeHtml(c.explanation)}</div>
+          ${ttsButton(c.explanation, "Lyssna")}
+        </div>
+      </div>
+
+      ${state.s2CaseAnswered && state.s2CaseIndex < s2Cases.length - 1 ? `
+        <div style="margin-top: 14px;">
+          <button type="button" class="btn-secondary" onclick="state.s2CaseIndex++; state.s2CaseAnswered = false; state.s2CaseChosenIdx = null; render();">
+            Nästa bygg-test (Scenario B) →
+          </button>
+        </div>
+      ` : ''}
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 24px 0;" />
+
+      <h3>Del 3 (C-nivå): Varför är ”oberoende granskning” (peer review) så viktig i vetenskapen?</h3>
+      <div class="options-grid">
+        <button type="button" class="option-btn ${state.s2WhyAnswered ? (state.s2WhyCorrect ? 'correct' : 'wrong') : ''}"
+          onclick="answerS2Why(true)">
+          Andra forskare utan ekonomiska intressen kontrollerar att metoden är rättvis och att slutsatserna stämmer – det minskar risken för fusk, slarv och vinklade resultat.
+        </button>
+        <button type="button" class="option-btn ${state.s2WhyAnswered && !state.s2WhyCorrect ? 'wrong' : ''}"
+          onclick="answerS2Why(false)">
+          Det behövs bara för att artikeln ska få ett finare typsnitt.
+        </button>
+      </div>
+
+      <div class="nav-footer">
+        <button type="button" class="btn-secondary" onclick="state.stage = 1; render();">← Tillbaka</button>
+        <button type="button" class="btn-primary" onclick="finishStage2()">Vidare till Etapp 3 (Slutsatser) →</button>
+      </div>
+    </div>
+  `;
+}
+
+function answerS2Def(isOk) {
+  state.s2DefAnswered = true;
+  state.s2DefCorrect = isOk;
+  if (!isOk) showToast("Nja! En vetenskaplig studie bygger på mätningar, kontrollerade försök och oberoende granskning.");
+  render();
+}
+
+function answerS2Case(idx) {
+  if (state.s2CaseAnswered) return;
+  state.s2CaseAnswered = true;
+  state.s2CaseChosenIdx = idx;
+  if (s2Cases[state.s2CaseIndex].options[idx].correct) {
+    state.s2CaseScore++;
+  }
+  render();
+  if (autoTts) speakText(s2Cases[state.s2CaseIndex].explanation);
+}
+
+function answerS2Why(isOk) {
+  state.s2WhyAnswered = true;
+  state.s2WhyCorrect = isOk;
+  if (!isOk) showToast("Tänk efter: vad händer om ingen utomstående får kontrollera hur studien gjordes?");
+  render();
+}
+
+function finishStage2() {
+  if (!state.s2DefCorrect) {
+    showToast("Svara rätt på Del 1 först!");
+    return;
+  }
+  if (state.s2CaseIndex < s2Cases.length - 1 || !state.s2CaseAnswered) {
+    showToast("Gör klart båda bygg-testen i Del 2 först!");
+    return;
+  }
+  if (!state.s2WhyCorrect) {
+    showToast("Svara rätt på Del 3 först!");
+    return;
+  }
+  state.stage = 3;
+  render();
+}
+
+/* --- STAGE 3: SLUTSATS- & FELKÄLLE-VERKSTADEN --- */
+function renderStage3() {
+  const audioIntro = "Etapp 3: Slutsats- och felkälle-verkstaden. På provet gäller det att dra en rimlig slutsats som stämmer med vad man faktiskt mätt, utan att överdriva.";
+
+  return `
+    <div class="card">
+      <div class="card-header-row">
+        <div>
+          <span class="tag tag-e">E/C-nivå • Tolka resultat & felkällor</span>
+          <h2>Slutsats- & felkälle-verkstaden</h2>
+        </div>
+        ${ttsButton(audioIntro, "Lyssna")}
+      </div>
+
+      <div style="background: var(--blue-bg); border: 1px solid rgba(56,189,248,0.4); padding: 14px 16px; border-radius: 10px; margin-bottom: 18px;">
+        <strong>💡 Viktig regel när ni drar slutsatser:</strong><br/>
+        Dra bara slutsatser om <strong>det som faktiskt testades</strong>.<br/>
+        Överdriv <strong>inte</strong> (skriv inte <em>”skyddar mot ALLA olyckor i världen”</em> om ni bara testade träflisor).
+      </div>
+
+      <h3>Steg 1: Välj den vetenskapligt rimliga slutsatsen</h3>
+      <p><strong>Uppgift A:</strong> Man testar nya ljudabsorberande takplattor i 6 klassrum och mäter att efterklangen minskar med 30 %. Vilken slutsats är rimlig?</p>
+      <div class="options-grid two-col">
+        <button type="button" class="option-btn ${state.s3Fix1Done ? 'correct' : ''}" onclick="state.s3Fix1Done = true; render();">
+          ✅ Takplattorna minskade efterklangen i de testade klassrummen med i snitt 30 %.
+        </button>
+        <button type="button" class="option-btn" onclick="showToast('Det där är en alldeles för stor överdrift!')">
+          ❌ Takplattorna gör att det blir helt knäpptyst på en rockkonsert eller vid en bergsprängning.
+        </button>
+      </div>
+
+      <p style="margin-top: 16px;"><strong>Uppgift B:</strong> Nya skyddsglasögon stoppar små träflisor i ett labbtest utan att repas. Vilken slutsats är rimlig?</p>
+      <div class="options-grid two-col">
+        <button type="button" class="option-btn" onclick="showToast('Nej, de testade bara små träflisor, inte tunga järnbalkar!')">
+          ❌ Glasögonen är helt oförstörbara och klarar att en grävmaskin kör över dem.
+        </button>
+        <button type="button" class="option-btn ${state.s3Fix2Done ? 'correct' : ''}" onclick="state.s3Fix2Done = true; render();">
+          ✅ Glasögonen skyddar mot små träflisor av den styrka som testades i försöket.
+        </button>
+      </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 24px 0;" />
+
+      <h3>Steg 2: Tolka en mättabell tillsammans!</h3>
+      <p><strong>Undersökning:</strong> 20 snickare testade en ny ergonomisk skruvdragare under 2 veckor när de skruvade gipsskivor. 10 snickare använde den nya skruvdragaren och 10 använde en vanlig standardmaskin. Snickarna visste vilken maskin som var ny.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Grupp</th>
+            <th>Antal snickare</th>
+            <th>Upplevd trötthet i handleden (skala 1–10)</th>
+            <th>Antal skruvade gipsskivor / timme</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Behandlingsgrupp (Ny ergonomisk)</strong></td>
+            <td>10 st</td>
+            <td>3,2 (lägre trötthet)</td>
+            <td>14 skivor / timme</td>
+          </tr>
+          <tr>
+            <td><strong>Kontrollgrupp (Vanlig standard)</strong></td>
+            <td>10 st</td>
+            <td>5,8 (mer trötthet)</td>
+            <td>13,8 skivor / timme</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="no-paste-badge">🚫 Klistra in är avstängt – skriv med era egna ord</div>
+
+      <label for="txtConc1">1. Skriv en <strong>rimlig slutsats</strong> utifrån tabellen (tänk på skillnaden mellan trötthet och byggtempo):</label>
+      <div class="starter-chips">
+        <button type="button" class="chip-btn" onclick="insertStarter('txtConc1', 'Resultatet visar att den nya skruvdragaren minskade tröttheten i handleden, men ')">
+          + Resultatet visar att...
+        </button>
+      </div>
+      <textarea id="txtConc1" class="no-paste" rows="2" placeholder="Resultatet visar att...">${escapeHtml(state.conc1Text)}</textarea>
+
+      <label for="txtConc2" style="margin-top: 10px;">2. Nämn minst en <strong>felkälla eller begränsning</strong> med undersökningen:</label>
+      <div class="starter-chips">
+        <button type="button" class="chip-btn" onclick="insertStarter('txtConc2', 'En felkälla eller begränsning i undersökningen är att ')">
+          + En felkälla är att...
+        </button>
+      </div>
+      <textarea id="txtConc2" class="no-paste" rows="2" placeholder="T.ex. att snickarna visste vilken maskin som var ny (placebo), eller att testet bara pågick i två veckor...">${escapeHtml(state.conc2Text)}</textarea>
+
+      <div class="pair-box">
+        <span class="tag tag-pair">🗣️ Par-snack #2 • Läs upp er slutsats och felkälla</span>
+        <p style="margin: 4px 0 8px 0;">Läs upp era svar högt för varandra och kolla: <strong>Har ni hållit er till fakta från tabellen utan att överdriva?</strong></p>
+        <label class="checkbox-row">
+          <input type="checkbox" id="chkPair2" ${state.pair2Spoken ? 'checked' : ''} />
+          <span>Vi har läst upp båda svaren högt för varandra!</span>
+        </label>
+      </div>
+
+      <div class="nav-footer">
+        <button type="button" class="btn-secondary" onclick="state.stage = 2; render();">← Tillbaka</button>
+        <button type="button" class="btn-primary" onclick="finishStage3()">Vidare till Etapp 4 →</button>
+      </div>
+    </div>
+  `;
+}
+
+function finishStage3() {
+  if (!state.s3Fix1Done || !state.s3Fix2Done) {
+    showToast("Välj rätt slutsats på både Uppgift A och Uppgift B i Steg 1!");
+    return;
+  }
+  const c1 = document.getElementById('txtConc1').value.trim();
+  const c2 = document.getElementById('txtConc2').value.trim();
+  const chk = document.getElementById('chkPair2').checked;
+
+  if (c1.length < 15 || c2.length < 15) {
+    showToast("Skriv både slutsatsen och felkällan i rutorna innan ni går vidare!");
+    return;
+  }
+  if (!chk) {
+    showToast("Kryssa i rutan när ni har läst upp svaren högt!");
+    return;
+  }
+
+  state.conc1Text = c1;
+  state.conc2Text = c2;
+  state.pair2Spoken = true;
+  state.stage = 4;
+  render();
+}
+
+/* --- STAGE 4: GRANSKA & FÖRBÄTTRA EN HEL UNDERSÖKNING --- */
+function renderStage4() {
+  const sc = studyConfigs[state.selectedStudy];
+  const audioIntro = "Etapp 4: Granska och förbättra en hel undersökning. Välj en av de två arbetsplatsstudierna och bedöm vad som är bra, vad som är en felkälla och hur man kan göra studien ännu mer pålitlig.";
+
+  return `
+    <div class="card">
+      <div class="card-header-row">
+        <div>
+          <span class="tag tag-e">E/C-nivå • Granska en hel studie</span>
+          <h2>Granska & förbättra en undersökning</h2>
+        </div>
+        ${ttsButton(audioIntro, "Lyssna")}
+      </div>
+
+      <p><strong>1. Välj vilken arbetsplatsstudie ni vill granska:</strong></p>
+      <div class="options-grid two-col" style="margin-bottom: 18px;">
+        <button type="button" class="option-btn ${state.selectedStudy === 'gloves' ? 'selected' : ''}" onclick="selectStudy('gloves')">
+          🧤 Studie A: Kylhandskar vid asfaltläggning
+        </button>
+        <button type="button" class="option-btn ${state.selectedStudy === 'light' ? 'selected' : ''}" onclick="selectStudy('light')">
+          💡 Studie B: Dagsljus-LED i mörka källare
+        </button>
+      </div>
+
+      <div style="background: var(--bg-card-alt); padding: 18px; border-radius: 10px; border-left: 5px solid var(--accent); margin-bottom: 18px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+          <div>
+            <strong>Beskrivning av studien:</strong><br/>
+            ${escapeHtml(sc.summary)}
+          </div>
+          ${ttsButton(sc.summary, "Lyssna")}
+        </div>
+      </div>
+
+      <div class="group-grid">
+        <div class="group-box treat">
+          <h3>🟢 Vad gör studien pålitlig?</h3>
+          <p style="font-size: 0.95rem; color: var(--text-muted);">Välj det som är vetenskapligt bra i upplägget:</p>
+          <select id="selGood" onchange="state.studyGood = this.value">
+            <option value="">-- Välj styrka i studien --</option>
+            ${sc.goodOptions.map(o => `<option value="${escapeHtml(o)}" ${state.studyGood === o ? 'selected' : ''}>${escapeHtml(o)}</option>`).join('')}
+          </select>
+        </div>
+
+        <div class="group-box ctrl">
+          <h3>🟠 Vilken felkälla / brist finns?</h3>
+          <p style="font-size: 0.95rem; color: var(--text-muted);">Välj det som gör slutsatsen lite osäker:</p>
+          <select id="selFlaw" onchange="state.studyFlaw = this.value">
+            <option value="">-- Välj felkälla / brist --</option>
+            ${sc.flawOptions.map(o => `<option value="${escapeHtml(o)}" ${state.studyFlaw === o ? 'selected' : ''}>${escapeHtml(o)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      <label for="selImprove"><strong>2. Hur kan forskarna förbättra studien (C/A-nivå)?</strong></label>
+      <select id="selImprove" onchange="state.studyImprove = this.value">
+        <option value="">-- Välj bästa förbättringen --</option>
+        ${sc.improveOptions.map(o => `<option value="${escapeHtml(o)}" ${state.studyImprove === o ? 'selected' : ''}>${escapeHtml(o)}</option>`).join('')}
+      </select>
+
+      <div class="pair-box">
+        <div class="no-paste-badge">🚫 Klistra in är avstängt – skriv med era egna ord</div>
+        <label for="txtStudyWhy"><strong>3. Sammanfatta er bedömning med egna ord:</strong> Vad är bra med studien, och varför skulle er förbättring göra resultatet säkrare?</label>
+        <div class="starter-chips">
+          <button type="button" class="chip-btn" onclick="insertStarter('txtStudyWhy', 'Studien är bra eftersom den har en kontrollgrupp, men en felkälla är att ')">
+            + Starta bedömningen
+          </button>
+        </div>
+        <textarea id="txtStudyWhy" class="no-paste" rows="3" placeholder="Studien är bra eftersom... En felkälla är att... Om man förbättrar den genom att...">${escapeHtml(state.studyWhyText)}</textarea>
+      </div>
+
+      <div class="nav-footer">
+        <button type="button" class="btn-secondary" onclick="state.stage = 3; render();">← Tillbaka</button>
+        <button type="button" class="btn-primary" onclick="finishStage4()">Kontrollera & gå till Slutgenrepet →</button>
+      </div>
+    </div>
+  `;
+}
+
+function selectStudy(key) {
+  state.selectedStudy = key;
+  state.studyGood = '';
+  state.studyFlaw = '';
+  state.studyImprove = '';
+  render();
+}
+
+function finishStage4() {
+  const sc = studyConfigs[state.selectedStudy];
+  const good = document.getElementById('selGood').value;
+  const flaw = document.getElementById('selFlaw').value;
+  const imp = document.getElementById('selImprove').value;
+  const why = document.getElementById('txtStudyWhy').value.trim();
+
+  if (!good || !flaw || !imp) {
+    showToast("Gör ett val i alla tre rullgardinsmenyer först!");
+    return;
+  }
+  if (good !== sc.goodOptions[0] || flaw !== sc.flawOptions[0] || imp !== sc.improveOptions[0]) {
+    showToast("💡 Kolla era val i menyerna – ett av valen stämmer inte med vetenskapligt arbetssätt!");
+    return;
+  }
+  if (why.length < 20) {
+    showToast("Skriv minst en mening som sammanfattar er bedömning i textrutan!");
+    return;
+  }
+
+  state.studyGood = good;
+  state.studyFlaw = flaw;
+  state.studyImprove = imp;
+  state.studyWhyText = why;
+  state.stage = 5;
+  state.s5Index = 0;
+  state.s5Revealed = false;
+  state.s5TimerVal = 45;
+  render();
+}
+
+/* --- STAGE 5: STORA MUNTLIGA SLUTGENREPET --- */
+function renderStage5() {
+  const item = s5Questions[state.s5Index];
+  const checkText = item.checklist.join(' ');
+
+  return `
+    <div class="card">
+      <div class="card-header-row">
+        <div>
+          <span class="tag tag-pair">🎤 Stora muntliga slutgenrepet • Fråga ${state.s5Index + 1} av ${s5Questions.length}</span>
+          <h2>Hela kursmomentet inför provet</h2>
+        </div>
+        ${ttsButton(item.q, "Läs upp frågan")}
+      </div>
+
+      <div style="background: var(--bg-card-alt); border: 2px solid var(--accent); padding: 20px; border-radius: 12px; margin: 14px 0;">
+        <p style="font-size: 1.25rem; font-weight: 800; margin: 0;" data-autoread="${item.q.replace(/"/g, '&quot;')}">
+          ${escapeHtml(item.q)}
+        </p>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 16px 0;">
+        <div class="timer-pill">⏱️ Snacktid: <span id="oralTimerDisplay">${state.s5TimerVal}</span> sek</div>
+        <button type="button" class="btn-secondary" onclick="startOralTimer()">▶️ Starta 45 sek timer</button>
+        <span style="color: var(--text-muted); font-size: 0.95rem;">Turas om att svara högt <strong>innan</strong> ni visar facit!</span>
+      </div>
+
+      ${!state.s5Revealed ? `
+        <button type="button" class="btn-primary" style="margin-top: 10px;" onclick="revealOral()">
+          👀 Visa facit & prov-checklista
+        </button>
+      ` : `
+        <div class="feedback-box show ok">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+            <div>
+              <strong>✅ Det här ska finnas med på provet:</strong>
+              <ul style="margin: 8px 0 0 0;">
+                ${item.checklist.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+              </ul>
+            </div>
+            ${ttsButton(checkText, "Lyssna på facit")}
+          </div>
+        </div>
+
+        <p style="margin-top: 18px; font-weight: 700;">Hur gick ert muntliga svar?</p>
+        <div class="options-grid two-col">
+          <button type="button" class="option-btn" onclick="rateOral('green')">
+            🟢 Vi fick med det mesta utan problem!
+          </button>
+          <button type="button" class="option-btn" onclick="rateOral('yellow')">
+            🟡 Vi behövde kika på checklistan (nu sitter det!)
+          </button>
+        </div>
+      `}
+    </div>
+  `;
+}
+
+function startOralTimer() {
+  clearInterval(oralInterval);
+  state.s5TimerVal = 45;
+  state.s5TimerRunning = true;
+  const disp = document.getElementById('oralTimerDisplay');
+  if (disp) disp.textContent = state.s5TimerVal;
+
+  oralInterval = setInterval(() => {
+    state.s5TimerVal--;
+    const d = document.getElementById('oralTimerDisplay');
+    if (d) d.textContent = Math.max(0, state.s5TimerVal);
+    if (state.s5TimerVal <= 0) {
+      clearInterval(oralInterval);
+      state.s5TimerRunning = false;
+      showToast("⏱️ Tiden är ute! Dags att kolla facit.");
+    }
+  }, 1000);
+}
+
+function revealOral() {
+  clearInterval(oralInterval);
+  state.s5Revealed = true;
+  render();
+}
+
+function rateOral(rating) {
+  state.s5Ratings[state.s5Index] = rating;
+  if (state.s5Index < s5Questions.length - 1) {
+    state.s5Index++;
+    state.s5Revealed = false;
+    state.s5TimerVal = 45;
+    render();
+  } else {
+    state.stage = 6;
+    render();
+  }
+}
+
+/* --- STAGE 6: OPTIONAL C/A BONUS (CORRELATION VS CAUSATION) --- */
+function renderStage6() {
+  const caIntro = "Grymt jobbat! Ni har klarat hela grundbanan och slutgenrepet. Vill ni vässa era resonemang mot C eller A på provet kan ni göra den här bonusuppgiften om samband och orsakssamband – annars kan ni hoppa direkt till sammanfattningen.";
+  return `
+    <div class="card">
+      <div class="card-header-row">
+        <div>
+          <span class="tag tag-ca">⭐ Valfri Bonus • Sikta mot C/A</span>
+          <h2>Samband vs. Orsakssamband (Kausalitet)</h2>
+        </div>
+        ${ttsButton(caIntro, "Lyssna")}
+      </div>
+
+      <p data-autoread="${caIntro.replace(/"/g, '&quot;')}">
+        På provets C- och A-nivå imponerar det stort om ni kan förklara varför ett statistiskt <strong>samband</strong> inte automatiskt bevisar ett <strong>orsakssamband</strong>:
+      </p>
+
+      <div style="background: var(--bg-card-alt); padding: 18px; border-radius: 12px; border: 1px solid var(--border); margin: 16px 0;">
+        <p><strong>Exempel:</strong> Statistik visar att under månader då det säljs mycket glass på byggvaruhusets kiosk ökar också antalet värmeslag på byggarbetsplatser. Glass orsakar förstås inte värmeslag – det är <strong>sommarvärmen</strong> (bakomliggande faktor) som orsakar båda!</p>
+        <p><strong>Fråga:</strong> Hur tar forskare reda på om ett samband faktiskt är ett äkta <strong>orsakssamband</strong>?</p>
+
+        <div class="options-grid">
+          <button type="button" class="option-btn ${state.caCorrAnswered ? (state.caCorrCorrect ? 'correct' : 'wrong') : ''}"
+            onclick="answerCaCorr(true)">
+            Genom ett kontrollerat experiment med behandlingsgrupp och kontrollgrupp där man bara ändrar en faktor i taget och håller bakomliggande faktorer lika.
+          </button>
+          <button type="button" class="option-btn ${state.caCorrAnswered && !state.caCorrCorrect ? 'wrong' : ''}"
+            onclick="answerCaCorr(false)">
+            Genom att rita ett ännu större stapeldiagram i fina färger.
+          </button>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <div class="no-paste-badge">🚫 Klistra in är avstängt – skriv med egna ord</div>
+          <label for="txtCa">C/A-utmaning: Förklara med egna ord skillnaden mellan ett <strong>samband</strong> och ett <strong>orsakssamband</strong>:</label>
+          <textarea id="txtCa" class="no-paste" rows="3" placeholder="Ett samband betyder att två saker hänger ihop i statistiken, medan ett orsakssamband betyder att...">${escapeHtml(state.caText)}</textarea>
+        </div>
+      </div>
+
+      <div class="nav-footer">
+        <button type="button" class="btn-secondary" onclick="skipBonus()">
+          Hoppa över bonus → Gå till sammanfattning
+        </button>
+        <button type="button" class="btn-primary" onclick="finishBonus()">
+          Spara bonus & gå till sammanfattning →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function answerCaCorr(isOk) {
+  state.caCorrAnswered = true;
+  state.caCorrCorrect = isOk;
+  if (!isOk) {
+    showToast("Nja! Ett diagram visar bara sambandet – för att bevisa orsak krävs ett kontrollerat experiment.");
+  }
+  render();
+}
+
+function skipBonus() {
+  state.didBonus = false;
+  state.stage = 7;
+  render();
+}
+
+function finishBonus() {
+  const txt = document.getElementById('txtCa').value.trim();
+  if (!state.caCorrCorrect && txt.length < 10) {
+    showToast("Svara på flervalsfrågan eller skriv ett kort svar i rutan – eller välj 'Hoppa över bonus'.");
+    return;
+  }
+  state.caText = txt;
+  state.didBonus = true;
+  state.stage = 7;
+  render();
+}
+
+/* --- STAGE 7: FINAL SUMMARY & GOOGLE CLASSROOM COPY --- */
+function buildSummaryReport() {
+  const mins = Math.max(1, Math.round((Date.now() - state.startTime) / 60000));
+  const nowStr = new Date().toLocaleDateString('sv-SE');
+  const greenCount = state.s5Ratings.filter(r => r === 'green').length;
+  const sc = studyConfigs[state.selectedStudy];
+
+  let lines = [
+    "==================================================",
+    "SAMMANFATTNING: LEKTION 3 – BYGGLABBET: KÄLLKRITIK & SLUTGENREP",
+    "Kurs: Naturkunskap 1a1 (Bygg- och anläggningsprogrammet)",
+    "==================================================",
+    `Datum: ${nowStr}`,
+    `Elever: ${state.student1} & ${state.student2}`,
+    state.classGroup ? `Klass/Grupp: ${state.classGroup}` : null,
+    `Arbetstid i appen: ca ${mins} min`,
+    "",
+    "--- RESULTAT ÖVERSIKT (E-NIVÅ) ---",
+    `• Etapp 1 (Reklam- & mytgranskaren): ${state.s1Score} / ${s1Cases.length} rätt`,
+    `• Etapp 2 (Vetenskap vs. Reklam & Samband): Definition ${state.s2DefCorrect ? 'Rätt' : 'Ej klar'} | Bygg-test: ${state.s2CaseScore} / ${s2Cases.length} rätt | Oberoende granskning: ${state.s2WhyCorrect ? 'Rätt' : 'Ej klar'}`,
+    `• Etapp 5 (Stora muntliga slutgenrepet): ${greenCount} / ${s5Questions.length} provfrågor sattes direkt vid muntlig övning`,
+    "",
+    "--- PARETS SLUTSATSER & FELKÄLLOR (ETAPP 3) ---",
+    "• Rimlig slutsats (Ergonomisk skruvdragare):",
+    state.conc1Text || "(Ej ifyllt)",
+    "",
+    "• Felkälla / begränsning i undersökningen:",
+    state.conc2Text || "(Ej ifyllt)",
+    "",
+    "--- PARETS STUDIEGRANSKNING (ETAPP 4) ---",
+    `• Vald studie: ${sc.name}`,
+    `• Styrka i studien: ${state.studyGood || '(Ej valt)'}`,
+    `• Felkälla / brist: ${state.studyFlaw || '(Ej valt)'}`,
+    `• Förslag på förbättring: ${state.studyImprove || '(Ej valt)'}`,
+    "• Egen sammanfattning av bedömningen:",
+    state.studyWhyText || "(Ej ifyllt)",
+    "",
+    "--- PAR-SNACK #1 (KÄLLKRITISKA KONTROLLFRÅGOR) ---",
+    state.pair1Text || "(Ej ifyllt)"
+  ].filter(item => item !== null);
+
+  if (state.didBonus) {
+    lines.push(
+      "",
+      "--- BONUS-ETAPP (SIKTA MOT C/A) ---",
+      `• Samband vs. Orsak flerval: ${state.caCorrCorrect ? 'Rätt' : 'Försökt'}`,
+      "• Egen förklaring av samband & orsakssamband:",
+      state.caText || "(Ej ifyllt)"
+    );
+  }
+
+  lines.push(
+    "",
+    "==================================================",
+    "Hela serien (Lektion 1–3) klar för inlämning i Google Classroom!"
+  );
+
+  return lines.join("\n");
+}
+
+function renderSummary() {
+  const report = buildSummaryReport();
+  const doneAudio = "Fantastiskt jobbat! Ni har klarat hela Lektion 3 och är redo för det muntliga provet. Klicka på knappen Kopiera sammanfattning och klistra in texten under Lektion 2 i ert delade dokument i Google Classroom.";
+
+  return `
+    <div class="card">
+      <div class="card-header-row">
+        <div>
+          <span class="tag tag-e">🏆 Hela serien klar! • Redo för Google Classroom</span>
+          <h1>Grymt jobbat, ${escapeHtml(state.student1)} & ${escapeHtml(state.student2)}!</h1>
+        </div>
+        ${ttsButton(doneAudio, "Lyssna")}
+      </div>
+
+      <p data-autoread="${doneAudio.replace(/"/g, '&quot;')}">
+        Gör så här för att lämna in ert arbete från Lektion 3:
+      </p>
+      <ol>
+        <li>Klicka på knappen <strong>”📋 Kopiera sammanfattning till Google Classroom”</strong> nedan.</li>
+        <li>Öppna ert delade Google Dokument i <strong>Google Classroom</strong>.</li>
+        <li>Ställ markören under <strong>Lektion 2</strong> och tryck <strong>Ctrl + V</strong> för att klistra in.</li>
+      </ol>
+
+      <div style="margin: 18px 0;">
+        <button type="button" class="btn-primary" style="width: 100%; font-size: 1.15rem; padding: 16px;" onclick="copySummaryToClipboard()">
+          📋 Kopiera sammanfattning till Google Classroom
+        </button>
+      </div>
+
+      <label for="summaryOutput">Er färdiga sammanfattning (förhandsvisning):</label>
+      <textarea id="summaryOutput" class="summary-textarea" readonly>${escapeHtml(report)}</textarea>
+
+      <div class="nav-footer">
+        <button type="button" class="btn-secondary" onclick="state.stage = 5; render();">← Tillbaka till slutgenrepet</button>
+      </div>
+    </div>
+  `;
+}
+
+function copySummaryToClipboard() {
+  const textarea = document.getElementById('summaryOutput');
+  const text = textarea.value;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopySuccess();
+    }).catch(() => {
+      fallbackCopy(textarea);
+    });
+  } else {
+    fallbackCopy(textarea);
+  }
+}
+
+function fallbackCopy(textarea) {
+  textarea.select();
+  textarea.setSelectionRange(0, 99999);
+  try {
+    document.execCommand('copy');
+    showCopySuccess();
+  } catch (err) {
+    showToast("Markera texten i rutan och tryck Ctrl + C för att kopiera.");
+  }
+}
+
+function showCopySuccess() {
+  showToast("✅ Kopierat! Gå till Google Classroom och tryck Ctrl + V under Lektion 2.", true);
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Initial boot
+render();
+</script>
+</body>
+</html>
